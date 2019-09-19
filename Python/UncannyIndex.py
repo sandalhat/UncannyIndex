@@ -55,7 +55,7 @@ while(True):
         #cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,0),2) #uncomment when needing to view the image
         x_mid = 1023 - int(((x + (w/2)) * 1.27875))
         y_mid = 1023 - int(((y + (h/2)) * 1.27875))
-        msg = str(x_mid).zfill(4) + ',' + str(y_mid).zfill(4) + '\n'
+        msg = str(x_mid) + ',' + str(y_mid) + '\n'
         msg = msg.encode('ascii')
         ser.write(msg)
         
