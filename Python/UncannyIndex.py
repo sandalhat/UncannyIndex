@@ -27,7 +27,7 @@ while result is None:
         sleep(1)
         pass
 
-#loop through until the 'q' key is pressed, looking for faces and finding their location within the frame
+#loop through, looking for faces and finding their location within the frame
 while(True):
     # Capture frame-by-frame
     ret, frame = cap.read()
@@ -41,8 +41,8 @@ while(True):
 
         #perform the face detection and send data to python
         faces = face_cascade.detectMultiScale(gray, 1.2, 8) #the second and third arguments are the scale factor and the number of neighbors, respectively. 
-        for (x,y,w,h) in faces:
-            img = cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
+        #for (x,y,w,h) in faces: #uncomment when needing to view the image
+        #    img = cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
 
     if (len(faces) != 0):
         closestFace = max(faces, key=lambda x: x[3])
@@ -52,18 +52,16 @@ while(True):
         w = closestFace[2]
         h = closestFace[3]
 
-        cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,0),2)
+        #cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,0),2) #uncomment when needing to view the image
         x_mid = 1023 - int(((x + (w/2)) * 1.27875))
         y_mid = 1023 - int(((y + (h/2)) * 1.27875))
         msg = str(x_mid).zfill(4) + ',' + str(y_mid).zfill(4) + '\n'
         msg = msg.encode('ascii')
         ser.write(msg)
-
-    # Display the resulting frame - comment this out only for final build, so as not to require the feed to be displayed on screen.
-    # IMPORTANT - when running in visual studio and developing, this code must be uncommented again so it's possible to see what's going on
-    #cv2.imshow('frame', frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+        
+    #cv2.imshow('frame', frame) #IMPORTANT - uncomment this section to see the frame and wait for 'q' to be pressed to exit
+    #if cv2.waitKey(1) & 0xFF == ord('q'): 
+    #    break
     
     #manage count variable to not run away
     if count < 20000:
